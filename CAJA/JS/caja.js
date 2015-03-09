@@ -371,7 +371,7 @@ $(function(){
                 }
 
                 var fBalance = parseFloat(data.tarjeta.balance);
-                if ( fBalance === 0.00)
+                if ( fBalance <= 0.00)
                 {
                     alert('La tarjeta VIP ya no cuenta con saldo. Abortando.');
                     return;
@@ -381,7 +381,7 @@ $(function(){
                 {
                     var cantidad = prompt('Cantidad a deducir del balance');
                                        
-                    if ( !cantidad || parseFloat(cantidad) === 0.00 || parseFloat(cantidad) > fBalance )
+                    if ( !cantidad || parseFloat(cantidad) <= 0.00 || parseFloat(cantidad) > fBalance )
                     {
                         alert('Abortando operacion');
                         return;
