@@ -370,17 +370,18 @@ $(function(){
                     return;
                 }
 
-                if (parseFloat(data.tarjeta.balance) === 0.00)
+                var fBalance = parseFloat(data.tarjeta.balance);
+                if ( fBalance === 0.00)
                 {
                     alert('La tarjeta VIP ya no cuenta con saldo. Abortando.');
                     return;
                 }
 
-                if (confirm('El balance de la tarjeta es $'+data.tarjeta.balance + ' - ¿continuar?.'))
+                if (confirm('El balance de la tarjeta es $' + data.tarjeta.balance + ' - ¿continuar?.'))
                 {
                     var cantidad = prompt('Cantidad a deducir del balance');
                                        
-                    if ( !cantidad || parseFloat(cantidad) === 0.00 )
+                    if ( !cantidad || parseFloat(cantidad) === 0.00 || parseFloat(cantidad) > fBalance )
                     {
                         alert('Abortando operacion');
                         return;
