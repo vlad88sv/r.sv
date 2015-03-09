@@ -351,7 +351,7 @@ $(function(){
                 return;
             }
 
-            tarjeta = tarjeta.match(/^%([0-9]{16})_$/);
+            tarjeta = tarjeta.match(/^%([0-9]{16})_.*/);
             
             console.log(tarjeta);
             
@@ -386,7 +386,7 @@ $(function(){
                         return;
                     }
 
-                    rsv_solicitar('cuenta_descuento',{cuenta: cuenta, tipo: 'cantidad', valor: cantidad, motivo: 'Tarjeta VIP utilizada: ' + (tarjeta.slice(0, 12) + "XXXX")},function(){
+                    rsv_solicitar('cuenta_descuento',{cuenta: cuenta, tipo: 'cantidad', valor: cantidad, motivo: 'Descuento de $' + cantidad + ' aplicado. Tarjeta VIP utilizada: ' + (tarjeta.slice(0, 12) + "XXXX")},function(){
                         cmp_cache = null;
                         $.post('http://vip.lapizzeria.com',{tarjeta:tarjeta, operacion:'descontar', cantidad:cantidad});
                     });
