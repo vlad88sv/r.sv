@@ -10,6 +10,7 @@ function actualizarTotales() {
         buffer += '<p>Total pendiente: $' + datos.aux.total_pendiente + '</p>';
         buffer += '<p>Total anulado: $' + datos.aux.total_anulado + '</p>';
         buffer += '<p>Total eliminado: $' + datos.aux.total_cancelado + '</p>';
+        buffer += '<p>Total descuentos: $' + datos.aux.total_descuentos + '</p>';
         buffer += '<p>Total compras: $' + datos.aux.total_compras + '</p>';
         
         buffer += '<hr />';
