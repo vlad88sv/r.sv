@@ -5,7 +5,26 @@ if ( isset($_POST['imprimir'])) {
 
 if ( isset($_POST['ultimo']))
 {
-    $c = 'SELECT `ID_cortez`, `fechahora_recibido`, `fechahora_remesado`, `total_a_cuadrar`, `total_diferencia`, `total_efectivo`, `total_pos`, `total_compras`, `total_caja`, `inventario`, `ID_usuario`, `fechatiempo`, `estado`, `remesa` FROM `cortez` WHERE 1 ORDER BY fechatiempo DESC LIMIT 1';
+    $c = 'SELECT `ID_cortez`, 
+                 `fechahora_recibido`, 
+                 `fechahora_remesado`, 
+                 `total_a_cuadrar`, 
+                 `total_diferencia`, 
+                 `total_efectivo`, 
+                 `total_pos`,
+                 `total_descuentos`,
+                 `total_compras`, 
+                 `total_caja`, 
+                 `inventario`, 
+                 `ID_usuario`, 
+                 `fechatiempo`, 
+                 `estado`, 
+                 `remesa` 
+                 FROM `cortez` 
+                 WHERE 1 
+                 ORDER BY fechatiempo 
+                 DESC LIMIT 1';
+
     $r = db_consultar($c);
     
     while ($r && $f = db_fetch($r))
@@ -23,7 +42,26 @@ if ( isset($_POST['historial']))
     if ( isset($_POST['fecha']) )
         $fecha = ' AND DATE(fechatiempo) = "'.$_POST['fecha'].'"';
 
-    $c = 'SELECT `ID_cortez`, `fechahora_recibido`, `fechahora_remesado`, IF(`total_diferencia` = (`total_a_cuadrar` - (`total_efectivo` + `total_pos` + `total_compras`)), 0, 1) AS "sospechoso", (`total_a_cuadrar` - (`total_efectivo` + `total_pos` + `total_compras`)) AS "total_diferencia2", `total_a_cuadrar`, `total_diferencia`, `total_efectivo`, `total_pos`, `total_compras`, `total_caja`, `inventario`, `ID_usuario`, `fechatiempo`, `estado`, `remesa` FROM `cortez` WHERE 1 '.$fecha.' ORDER BY fechatiempo DESC';
+    $c = 'SELECT `ID_cortez`, 
+                 `fechahora_recibido`, 
+                 `fechahora_remesado`, 
+                 IF(`total_diferencia` = (`total_a_cuadrar` - (`total_efectivo` + `total_pos` + `total_compras`)), 0, 1) AS "sospechoso", 
+                 (`total_a_cuadrar` - (`total_efectivo` + `total_pos` + `total_compras`)) AS "total_diferencia2", 
+                 `total_a_cuadrar`, 
+                 `total_diferencia`, 
+                 `total_efectivo`, 
+                 `total_pos`,
+                 `total_descuentos`,
+                 `total_compras`, 
+                 `total_caja`, 
+                 `inventario`, 
+                 `ID_usuario`, 
+                 `fechatiempo`, 
+                 `estado`, 
+                 `remesa` 
+                 FROM `cortez` 
+                 WHERE 1 '.$fecha.' ORDER BY fechatiempo DESC';
+                 
     $r = db_consultar($c);
     
     while ($r && $f = db_fetch($r))
@@ -47,6 +85,7 @@ if ( isset($_POST['cortar']) )
     $DATOS['total_compras'] = $corte['total_compras'];
     $DATOS['total_efectivo'] = $corte['total_efectivo'];
     $DATOS['total_pos'] = $corte['total_pos'];
+    $DATOS['total_descuentos'] = $corte['total_descuentos'];
     $DATOS['total_caja'] = $corte['total_caja'];
     $DATOS['fechatiempo'] = mysql_datetime();
     
@@ -103,6 +142,17 @@ $f = db_fetch($r);
 
 $total = ( empty($f['total']) ? '0.00' : $f['total'] );
 $json['aux']['total_cancelado'] = numero($total);
+
+//Inclusion Descuentos en Cortes
+//Abril 2015
+$c = 'SELECT SUM( ROUND(cantidad,2) ) AS total FROM `cuenta_descuento` AS t1 LEFT JOIN `cuentas` AS t2 USING (ID_cuenta) WHERE DATE(fecha) = "'.$fecha.'" AND fecha >= COALESCE((SELECT fechatiempo FROM cortez ORDER BY fechatiempo DESC LIMIT 1),"0")';
+$r = db_consultar($c);
+$f = db_fetch($r);
+
+$total = ( empty($f['total']) ? '0.00' : $f['total'] );
+$json['aux']['total_descuentos'] = numero($total);
+//Fin Descuentos en Cortes
+
 
 $c = 'SELECT SUM( `precio`) AS total FROM `compras` WHERE `fechatiempo` BETWEEN "'.$fecha.' 00:00:00" AND "'.$fecha.' 23:59:59" AND via = "caja"';
 $r = db_consultar($c);
