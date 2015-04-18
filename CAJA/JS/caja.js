@@ -352,7 +352,7 @@ $(function(){
                 return;
             }
 
-            tarjeta = tarjeta.match(/^%([0-9]{16})_.*/);
+            tarjeta = tarjeta.match(/^%([0-9]{16}).*/);
             
             console.log(tarjeta);
             

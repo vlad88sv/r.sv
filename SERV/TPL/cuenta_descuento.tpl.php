@@ -38,6 +38,7 @@ if ($_POST['tipo'] == 'porcentaje')
 
         $DATOS['grupo'] = 'ORDENES';
         $DATOS['accion'] = 'DESCUENTO '.$porcentaje.'%';
+        $DATOS['flag_importante'] = '1';
 
         db_agregar_datos('historial',$DATOS);
     }
