@@ -50,7 +50,8 @@ function cuadrarCorte() {
     var total_efectivo = parseFloat($.trim($("#total_efectivo").val()));
     var total_pos = parseFloat($.trim($("#total_pos").val()));
     var total_compras = parseFloat($.trim($("#total_compras").val()));
-    var total_diferencia = total_a_cuadrar - (total_efectivo + total_pos + total_compras) ;
+    var total_descuentos = parseFloat($.trim($("#total_descuentos").val()));
+    var total_diferencia = total_a_cuadrar - (total_efectivo + total_pos + total_compras + total_descuentos) ;
     
     $("#total_diferencia").val(total_diferencia.toFixed(2));
     
@@ -755,6 +756,7 @@ $(function(){
             buffer += '<p>Total pendiente: $' + datos.aux.total_pendiente + ' - <span style="color:#666;">solo cuentas abiertas</span></p>';
             buffer += '<p>Total anulado: $' + datos.aux.total_anulado + ' - <span style="color:#666;">solo cuentas anuladas</span></p>';
             buffer += '<p>Total eliminado: $' + datos.aux.total_cancelado + ' - <span style="color:#666;">solo pedidos eliminados</span></p>';
+            buffer += '<p>Total descuentos: $' + datos.aux.total_descuentos + ' - <span style="color:#666;">descuentos VIP aplicados</span></p>';
             buffer += '<p>Total compras: $' + datos.aux.total_compras + ' - <span style="color:#666;">solo dinero gastado de caja en compras</span></p>';
             buffer += '<p style="color:yellow;">Total a cuadrar: $' + datos.aux.total_cuadrar + ' - <span style="color:#666;">solo dinero desde el último corte Z</span></p>';
             buffer += '<p style="color:yellow;">Total compras a cuadrar: $' + datos.aux.total_compras_cuadrar + ' - <span style="color:#666;">solo compras desde el último corte Z</span></p>';
@@ -773,6 +775,7 @@ $(function(){
                 buffer += '<tr><td>Total efectivo:</td><td><input id="total_efectivo" name="total_efectivo" type="text" value="0" /></td></tr>';
                 buffer += '<tr><td>Total POS:</td><td><input id="total_pos" name="total_pos" type="text" value="0" /></td></tr>';
                 buffer += '<tr><td>Total compras:</td><td><input id="total_compras" name="total_compras" readonly="readonly" type="text" value="'+datos.aux.total_compras_cuadrar+'" /></td></tr>';
+                buffer += '<tr><td>Total descuentos:</td><td><input id="total_descuentos" name="total_descuentos" readonly="readonly" type="text" value="'+datos.aux.total_descuentos+'" /></td></tr>';
                 buffer += '<tr><td>Diferencia:</td><td><input id="total_diferencia" name="total_diferencia" readonly="readonly" type="text" value="" /></td></tr>';
                 buffer += '<tr><td>En caja:</td><td><input id="total_caja" name="total_caja" type="text" value="0.00" /></td></tr>';
                 buffer += '</table>';
