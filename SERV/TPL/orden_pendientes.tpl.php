@@ -22,8 +22,6 @@ if (empty ($__listado_nodos_sql[$GRUPO]))
 
 $GRUPO = $__listado_nodos_sql[$GRUPO];
 
-error_log($GRUPO);
-
 $CRITERIO_BASE = ' AND t1.`flag_pausa` = 0 AND t1.`flag_despachado` = 0';
 
 if (isset($_POST['modo_domicilio']))

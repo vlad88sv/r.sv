@@ -42,14 +42,12 @@ class sesion {
         $clave = db_codex($clave);
         
         $c = "SELECT * FROM usuarios WHERE LCASE(usuario) = '$usuario' AND clave = SHA1('$clave') LIMIT 1";
-        error_log($c);
         $rUsuario = db_consultar($c);
         if (db_num_resultados($rUsuario) > 0)
         {
             $_SESSION['datos'] = db_fetch($rUsuario);
             
             $c = 'SELECT permiso FROM usuarios_permisos WHERE ID_usuarios = "'.$_SESSION['datos']['ID_usuarios'].'"';
-            error_log($c);
             $rPermisos = db_consultar($c);
             
             while ($fPermiso = db_fetch($rPermisos))
