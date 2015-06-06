@@ -432,7 +432,7 @@ $(function(){
 
     $.ajaxSetup({
         cache: false,
-        timeout: 10000,
+        timeout: 30000,
         complete: function (jqXHR, textStatus) {
             if (textStatus == "success") {
                 $("#ajax_error").hide();
@@ -442,7 +442,7 @@ $(function(){
             $("#ajax_error").show();
             var textoError = '';
             if (jqXHR.status === 0) {
-                textoError = 'No hay conexión.\nVerificar red.';
+                textoError = "No hay conexión.\nVerificar red.\nError: " + jqXHR.responseText;
             } else if (jqXHR.status == 404) {
                 textoError = 'Página no encontrada [404]';
             } else if (jqXHR.status == 500) {
@@ -452,7 +452,7 @@ $(function(){
             } else if (exception === 'abort') {
                 textoError = 'Error: petición AJAX abortada.';
             } else {
-                textoError = 'Error desconocido.\nError: ' + jqXHR.responseText;
+                textoError = "Error desconocido.\nError: " + jqXHR.responseText;
             }
 
             $("#ajax_error_texto").html(textoError);

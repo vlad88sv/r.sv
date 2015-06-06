@@ -80,7 +80,7 @@ function estadisticas() {
      });
 }
 
-setInterval(actualizar,1000);
+setInterval(actualizar,5000);
 setInterval(estadisticas,10000);
 
 function activarAdm()
