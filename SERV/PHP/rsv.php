@@ -266,7 +266,7 @@ class rsv {
         $totales['total_con_iva_y_propina'] = numero($totales['total_con_iva_y_propina']);
         $totales['iva'] = numero($buffer_total - ($buffer_total / 1.13));
         $totales['propina'] = numero(($buffer_total * 1.10) - $buffer_total);
-
+        
         mysqli_free_result($rPedidos);
         
         
@@ -284,6 +284,15 @@ class rsv {
         }
         
         mysqli_free_result($rGrupos);
+        
+        //Inclusion Descuentos en Tiquetes
+        //Abril 2015
+        //Agregando al Arreglo de Totales
+        $c = 'SELECT SUM( ROUND(cantidad,2) ) AS total_descuento FROM `cuenta_descuento` AS t1 LEFT JOIN `cuentas` AS t2 USING (ID_cuenta) WHERE cuenta_descuento = "'.$CUENTA.'"';
+        $r = db_consultar($c);
+        $f = db_fetch($r);
+        $totales['total_descuento'] = ( empty($f['total_descuento']) ? '0.00' : $f['total_descuento'] );        
+        
         
         return array($fCuenta, $pedidos, $totales);
     }
@@ -603,6 +612,12 @@ class rsv {
             if ( $cuenta['flag_nopropina'] == '0' )
                 $impresion .= '<tr><td>Propina (10%):</td><td>' . '$' . str_pad($totales['propina'], 6, ' ', STR_PAD_LEFT) . '</td></tr>';
            
+        //Inclusion Descuentos en Tiquetes
+        //Abril 2015
+        //Agregando a la impresion del Tiquete
+            if ( $totales['total_descuento'] != '0' )
+                $impresion .= '<tr><td>Descuento: :</td><td>' . '($' . str_pad($totales['total_descuento'], 6, ' ', STR_PAD_LEFT) . ') </td></tr>';
+                
             $impresion .= '<tr><td>Total:</td><td>' . '$' . str_pad($totales['total_con_iva_y_propina'], 6, ' ', STR_PAD_LEFT) . '</td></tr>';
             
         $impresion .= '</table>'; // Fin tabla de totales
@@ -610,6 +625,7 @@ class rsv {
         $impresion .= '<br /><br /><br /><br /><p style="text-align:center;">'.SUCURSAL_DIRECCION.'<br />¡Gracias por su compra!<br /><br />' . date('Y/m/d H:i:s') . '</p>';
         
         db_agregar_datos('comandas', array('data' => $impresion, 'estacion' => $ESTACION));
+        
 
         // HISTORIAL
         $DATOS['grupo'] = 'ORDENES';
