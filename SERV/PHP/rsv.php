@@ -288,7 +288,7 @@ class rsv {
         //Inclusion Descuentos en Tiquetes
         //Abril 2015
         //Agregando al Arreglo de Totales
-        $c = 'SELECT SUM( ROUND(cantidad,2) ) AS total_descuento FROM `cuenta_descuento` AS t1 LEFT JOIN `cuentas` AS t2 USING (ID_cuenta) WHERE cuenta_descuento = "'.$CUENTA.'"';
+        $c = 'SELECT SUM( ROUND(cantidad,2) ) AS total_descuento FROM `cuenta_descuento` AS t1 LEFT JOIN `cuentas` AS t2 USING (ID_cuenta) WHERE ID_cuenta = "'.$CUENTA.'"';
         $r = db_consultar($c);
         $f = db_fetch($r);
         $totales['total_descuento'] = ( empty($f['total_descuento']) ? '0.00' : $f['total_descuento'] );        
